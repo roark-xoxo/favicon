@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Jersey_25 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Jersey_25({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Favioncs",
@@ -18,7 +18,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<Providers>
-				<body className={inter.className}>{children}</body>
+				<body className={font.className}>{children}</body>
 			</Providers>
 		</html>
 	);

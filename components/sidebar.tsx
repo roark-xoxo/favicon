@@ -1,3 +1,6 @@
+import { ColorPicker } from "@/components/color-picker";
+import { InputRange } from "@/components/input-range";
+
 export function Sidebar() {
 	return (
 		<div className="pb-3 pl-3 pr-4">
@@ -9,7 +12,7 @@ export function Sidebar() {
 								Enter Text
 							</label>
 							<input
-								bind:value={$store.text}
+								// bind:value={$store.text}
 								name="text"
 								className="w-full rounded-xl border border-zinc-950 px-4 text-3xl shadow-sm placeholder:text-zinc-400"
 								placeholder="Enter Text"
@@ -22,17 +25,17 @@ export function Sidebar() {
 							<div>
 								<ColorPicker
 									id="text-color-picker"
-									bind:value={$store.textColor.hex}
+									// bind:value={$store.textColor.hex}
 								/>
 							</div>
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Size</h3>
-									<p>{$store.fontSize} px</p>
+									{/* <p>{$store.fontSize} px</p> */}
 								</div>
 								<InputRange
 									id="text-size"
-									bind:value={$store.fontSize}
+									// bind:value={$store.fontSize}
 									min={0}
 									max={700}
 								/>
@@ -40,11 +43,11 @@ export function Sidebar() {
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Rotation</h3>
-									<p>{$store.rotation}°</p>
+									{/* <p>{$store.rotation}°</p> */}
 								</div>
 								<InputRange
 									id="text-rotation"
-									bind:value={$store.rotation}
+									// bind:value={$store.rotation}
 									min={0}
 									max={360}
 								/>
@@ -55,17 +58,17 @@ export function Sidebar() {
 							<div>
 								<ColorPicker
 									id="border-color-picker"
-									bind:value={$store.border.color.hex}
+									// bind:value={$store.border.color.hex}
 								/>
 							</div>
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Width</h3>
-									<p>{$store.borderWidth} px</p>
+									{/* <p>{$store.borderWidth} px</p> */}
 								</div>
 								<InputRange
 									id="text-border-width"
-									bind:value={$store.borderWidth}
+									// bind:value={$store.borderWidth}
 									min={0}
 									max={190}
 								/>
@@ -73,11 +76,11 @@ export function Sidebar() {
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Radius</h3>
-									<p>{$store.rounded} px</p>
+									{/* <p>{$store.rounded} px</p> */}
 								</div>
 								<InputRange
 									id="text-border-radius"
-									bind:value={$store.rounded}
+									// bind:value={$store.rounded}
 									min={0}
 									max={200}
 								/>
@@ -88,7 +91,7 @@ export function Sidebar() {
 							<div>
 								<ColorPicker
 									id="background-color-picker"
-									bind:value={$store.bgColor.hex}
+									// bind:value={$store.bgColor.hex}
 								/>
 							</div>
 						</section>

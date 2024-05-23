@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Jersey+25&display=swap");
 
 body {
 	@apply bg-zinc-50 antialiased dark:bg-zinc-800;
