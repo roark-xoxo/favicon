@@ -1,6 +1,6 @@
-import { writable } from "svelte/store";
+import { atom } from "jotai";
 
-export const store = writable({
+export const store = atom({
 	text: "ico",
 	textColor: {
 		hex: "#000",
