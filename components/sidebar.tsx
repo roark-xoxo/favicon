@@ -1,18 +1,31 @@
+"use client";
+
 import { ColorPicker } from "@/components/color-picker";
 import { InputRange } from "@/components/input-range";
-
+import { useAtomValue, useSetAtom } from "jotai";
+import { store } from "@/lib/stores";
 export function Sidebar() {
+	const values = useAtomValue(store);
+	const setValues = useSetAtom(store);
 	return (
 		<div className="pb-3 pl-3 pr-4">
 			<div className="flex h-full w-64 flex-col items-center space-y-4 rounded-3xl bg-rose-400/65 py-4 dark:text-zinc-100">
 				<div className="flex w-full overflow-scroll px-6">
 					<form className="space-y-6">
 						<div>
-							<label for="text" className="sr-only">
+							<label htmlFor="text" className="sr-only">
 								Enter Text
 							</label>
 							<input
-								// bind:value={$store.text}
+								value={values.text}
+								onChange={(event) =>
+									setValues((atom) => {
+										return {
+											...atom,
+											text: event.target.value,
+										};
+									})
+								}
 								name="text"
 								className="w-full rounded-xl border border-zinc-950 px-4 text-3xl shadow-sm placeholder:text-zinc-400"
 								placeholder="Enter Text"
@@ -31,25 +44,35 @@ export function Sidebar() {
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Size</h3>
-									{/* <p>{$store.fontSize} px</p> */}
+									<p>{values.fontSize} px</p>
 								</div>
 								<InputRange
 									id="text-size"
-									// bind:value={$store.fontSize}
+									value={values.fontSize}
 									min={0}
 									max={700}
+									onValueChange={(value) => {
+										setValues((store) => {
+											return { ...store, fontSize: value[0] };
+										});
+									}}
 								/>
 							</div>
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Rotation</h3>
-									{/* <p>{$store.rotation}°</p> */}
+									<p>{values.rotation}°</p>
 								</div>
 								<InputRange
 									id="text-rotation"
-									// bind:value={$store.rotation}
+									value={values.rotation}
 									min={0}
 									max={360}
+									onValueChange={(value) => {
+										setValues((store) => {
+											return { ...store, rotation: value[0] };
+										});
+									}}
 								/>
 							</div>
 						</section>
@@ -64,25 +87,35 @@ export function Sidebar() {
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Width</h3>
-									{/* <p>{$store.borderWidth} px</p> */}
+									<p>{values.borderWidth} px</p>
 								</div>
 								<InputRange
 									id="text-border-width"
-									// bind:value={$store.borderWidth}
+									value={values.borderWidth}
 									min={0}
 									max={190}
+									onValueChange={(value) => {
+										setValues((store) => {
+											return { ...store, borderWidth: value[0] };
+										});
+									}}
 								/>
 							</div>
 							<div className="space-y-1">
 								<div className="flex items-center justify-between">
 									<h3>Radius</h3>
-									{/* <p>{$store.rounded} px</p> */}
+									<p>{values.rounded} px</p>
 								</div>
 								<InputRange
 									id="text-border-radius"
-									// bind:value={$store.rounded}
+									value={values.rounded}
 									min={0}
 									max={200}
+									onValueChange={(value) => {
+										setValues((store) => {
+											return { ...store, rounded: value[0] };
+										});
+									}}
 								/>
 							</div>
 						</section>

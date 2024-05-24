@@ -6,29 +6,25 @@ export function InputRange({
 	value,
 	min,
 	max,
+	onValueChange,
 }: {
 	id: string;
 	value: number;
 	min: number;
 	max: number;
+	onValueChange: (value: number[]) => void;
 }) {
-	// let internalValue = $state(value);
-	// value={internalValue}
-	// oninput={(e) => {
-	// 	const target = e?.target as HTMLInputElement;
-	// 	internalValue = +target?.value;
-	// 	value = internalValue;
-	// }}
 	return (
 		<div>
 			<Slider.Root
 				className="relative flex h-5 w-full touch-none select-none items-center"
-				defaultValue={[50]}
+				value={[value]}
 				id={id}
 				name={id}
 				min={min}
 				max={max}
 				step={1}
+				onValueChange={onValueChange}
 			>
 				<Slider.Track className="relative h-2 grow rounded-full border border-zinc-900 bg-zinc-200/25">
 					<Slider.Range className="absolute h-full rounded-full bg-zinc-100" />
