@@ -12,6 +12,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slider": "^1.1.2",
     "jotai": "^2.8.0",
+    "modern-screenshot": "^4.4.39",
     "next": "14.2.3",
     "react": "^18",
     "react-colorful": "^5.6.1",
