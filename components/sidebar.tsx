@@ -4,6 +4,7 @@ import { ColorPicker } from "@/components/color-picker";
 import { InputRange } from "@/components/input-range";
 import { useAtomValue, useSetAtom } from "jotai";
 import { store } from "@/lib/stores";
+import { Label } from "@/components/label";
 export function Sidebar() {
 	const values = useAtomValue(store);
 	const setValues = useSetAtom(store);
@@ -13,9 +14,9 @@ export function Sidebar() {
 				<div className="flex w-full overflow-scroll px-6">
 					<form className="space-y-6">
 						<div>
-							<label htmlFor="text" className="sr-only">
+							<Label htmlFor="text" className="sr-only">
 								Enter Text
-							</label>
+							</Label>
 							<input
 								value={values.text}
 								onChange={(event) =>
