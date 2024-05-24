@@ -11,12 +11,17 @@
   "dependencies": {
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slider": "^1.1.2",
+    "@types/file-saver": "^2.0.7",
+    "file-saver": "^2.0.5",
+    "icojs": "^0.19.3",
     "jotai": "^2.8.0",
+    "jszip": "^3.10.1",
     "modern-screenshot": "^4.4.39",
     "next": "14.2.3",
     "react": "^18",
     "react-colorful": "^5.6.1",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "to-ico": "^1.1.5"
   },
   "devDependencies": {
     "@types/node": "^20",

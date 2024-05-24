@@ -1,11 +1,11 @@
+import { DownloadButton } from "@/components/download-button";
+
 export function Header() {
 	return (
 		<div className="pb-3 pr-3">
 			<header className="flex items-center justify-end space-x-4 rounded-3xl bg-teal-400/65 px-2 py-2 leading-tight dark:bg-slate-900">
 				<div>
-					<button className="rounded-full border border-zinc-950 bg-zinc-50 px-6 py-2 uppercase hover:bg-yellow-300">
-						Download
-					</button>
+					<DownloadButton />
 				</div>
 			</header>
 		</div>

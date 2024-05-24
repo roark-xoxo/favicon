@@ -10,6 +10,7 @@ export function Canvas() {
 		<div className="flex h-full w-full flex-col items-center justify-center p-4">
 			<div className="flex h-full w-full flex-col items-center justify-center">
 				<div
+				id="favicon"
 					style={{
 						borderWidth: `${values.borderWidth}px`,
 						borderRadius: `${values.rounded}px`,
