@@ -13,8 +13,8 @@ export function Canvas() {
 					style={{
 						borderWidth: `${values.borderWidth}px`,
 						borderRadius: `${values.rounded}px`,
-						backgroundColor: `${values.bgColor.hex}`,
-						borderColor: `${values.border.color.hex}`,
+						backgroundColor: `${values.bgColor}`,
+						borderColor: `${values.borderColor}`,
 					}}
 					className="flex size-80 items-center justify-center overflow-hidden"
 				>
@@ -22,7 +22,7 @@ export function Canvas() {
 						style={{
 							fontSize: `${values.fontSize}px`,
 							rotate: `${values.rotation}deg`,
-							color: `${values.textColor.hex}`,
+							color: `${values.textColor}`,
 						}}
 						className="leading-none"
 					>

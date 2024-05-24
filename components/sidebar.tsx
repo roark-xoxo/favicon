@@ -39,7 +39,15 @@ export function Sidebar() {
 							<div>
 								<ColorPicker
 									id="text-color-picker"
-									// bind:value={$store.textColor.hex}
+									color={values.textColor}
+									onChange={(color) =>
+										setValues((atom) => {
+											return {
+												...atom,
+												textColor: color,
+											};
+										})
+									}
 								/>
 							</div>
 							<div className="space-y-1">
@@ -81,8 +89,16 @@ export function Sidebar() {
 							<h2 className="text-3xl font-bold leading-none">Border</h2>
 							<div>
 								<ColorPicker
-									id="border-color-picker"
-									// bind:value={$store.border.color.hex}
+									id="background-color-picker"
+									color={values.borderColor}
+									onChange={(color) =>
+										setValues((atom) => {
+											return {
+												...atom,
+												borderColor: color,
+											};
+										})
+									}
 								/>
 							</div>
 							<div className="space-y-1">
@@ -125,7 +141,15 @@ export function Sidebar() {
 							<div>
 								<ColorPicker
 									id="background-color-picker"
-									// bind:value={$store.bgColor.hex}
+									color={values.bgColor}
+									onChange={(color) =>
+										setValues((atom) => {
+											return {
+												...atom,
+												bgColor: color,
+											};
+										})
+									}
 								/>
 							</div>
 						</section>
