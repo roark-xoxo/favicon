@@ -6,8 +6,8 @@ import { Providers } from "@/components/providers";
 const font = Jersey_25({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Favioncs",
-	description: "Create your favicon.",
+	title: "FAVICON",
+	description: "Create your own favicon.",
 };
 
 export default function RootLayout({
