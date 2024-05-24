@@ -18,7 +18,13 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<Providers>
-				<body className={font.className}>{children}</body>
+				<body
+					className={
+						font.className + " bg-zinc-50 antialiased dark:bg-zinc-800"
+					}
+				>
+					{children}
+				</body>
 			</Providers>
 		</html>
 	);
