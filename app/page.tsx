@@ -1,3 +1,4 @@
+import { Canvas } from "@/components/canvas";
 import { Header, Nav } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 
@@ -9,7 +10,7 @@ export default function Home() {
 				<Sidebar />
 				<div className="flex w-full flex-col">
 					<Header />
-					{/* <Canvas /> */}
+					<Canvas />
 				</div>
 			</div>
 		</div>
