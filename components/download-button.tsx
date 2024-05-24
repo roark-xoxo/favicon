@@ -46,23 +46,23 @@ export function DownloadButton() {
 		icoHeader.set([0x00, 0x00, 0x01, 0x00, 0x01, 0x00], 0);
 
 		// Icon directory entry
-		icoHeader.set(
-			[
-				0x20, // Width: 32
-				0x20, // Height: 32
-				0x00, // Number of colors (0 if no palette)
-				0x00, // Reserved
-				0x01,
-				0x00, // Color planes
-				0x20,
-				0x00, // Bits per pixel: 32
-				...new Uint8Array(new Uint32Array([pngData.length]).buffer), // Image size
-				...new Uint8Array(
+		const iconDirEntry = [
+			0x20, // Width: 32
+			0x20, // Height: 32
+			0x00, // Number of colors (0 if no palette)
+			0x00, // Reserved
+			0x01,
+			0x00, // Color planes
+			0x20,
+			0x00, // Bits per pixel: 32
+			...Array.from(new Uint8Array(new Uint32Array([pngData.length]).buffer)), // Image size
+			...Array.from(
+				new Uint8Array(
 					new Uint32Array([fileHeaderSize + iconDirEntrySize]).buffer
-				), // Offset to image data
-			],
-			fileHeaderSize
-		);
+				)
+			), // Offset to image data
+		];
+		icoHeader.set(iconDirEntry, fileHeaderSize);
 
 		const icoBuffer = new Uint8Array(icoHeader.length + pngData.length);
 		icoBuffer.set(icoHeader, 0);
