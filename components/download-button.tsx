@@ -37,75 +37,36 @@ export function DownloadButton() {
 
 	const createIcoBuffer = (pngBuffer: ArrayBuffer): ArrayBuffer => {
 		const pngData = new Uint8Array(pngBuffer);
+		const fileHeaderSize = 6;
+		const iconDirEntrySize = 16;
 
-		const icoHeader = new Uint8Array([
-			0x00,
-			0x00, // Reserved
-			0x01,
-			0x00, // ICO type
-			0x01,
-			0x00, // Number of images
-			0x20, // Width
-			0x20, // Height
-			0x00, // Number of colors
-			0x00, // Reserved
-			0x01,
-			0x00, // Color planes
-			0x08,
-			0x00, // Bits per pixel
-			...new Uint8Array(new Uint32Array([pngData.length + 40]).buffer), // Image size
-			...new Uint8Array(new Uint32Array([22]).buffer), // Offset to image data
-		]);
+		const icoHeader = new Uint8Array(fileHeaderSize + iconDirEntrySize);
 
-		const bmpHeader = new Uint8Array([
-			0x28,
-			0x00,
-			0x00,
-			0x00, // Header size
-			0x20,
-			0x00,
-			0x00,
-			0x00, // Width
-			0x20,
-			0x00,
-			0x00,
-			0x00, // Height
-			0x01,
-			0x00, // Color planes
-			0x08,
-			0x00, // Bits per pixel
-			0x00,
-			0x00,
-			0x00,
-			0x00, // Compression
-			0x00,
-			0x00,
-			0x00,
-			0x00, // Image size (can be 0 for uncompressed)
-			0x00,
-			0x00,
-			0x00,
-			0x00, // X pixels per meter
-			0x00,
-			0x00,
-			0x00,
-			0x00, // Y pixels per meter
-			0x00,
-			0x00,
-			0x00,
-			0x00, // Number of colors
-			0x00,
-			0x00,
-			0x00,
-			0x00, // Important colors
-		]);
+		// ICO header
+		icoHeader.set([0x00, 0x00, 0x01, 0x00, 0x01, 0x00], 0);
 
-		const icoBuffer = new Uint8Array(
-			icoHeader.length + bmpHeader.length + pngData.length
+		// Icon directory entry
+		icoHeader.set(
+			[
+				0x20, // Width: 32
+				0x20, // Height: 32
+				0x00, // Number of colors (0 if no palette)
+				0x00, // Reserved
+				0x01,
+				0x00, // Color planes
+				0x20,
+				0x00, // Bits per pixel: 32
+				...new Uint8Array(new Uint32Array([pngData.length]).buffer), // Image size
+				...new Uint8Array(
+					new Uint32Array([fileHeaderSize + iconDirEntrySize]).buffer
+				), // Offset to image data
+			],
+			fileHeaderSize
 		);
+
+		const icoBuffer = new Uint8Array(icoHeader.length + pngData.length);
 		icoBuffer.set(icoHeader, 0);
-		icoBuffer.set(bmpHeader, icoHeader.length);
-		icoBuffer.set(pngData, icoHeader.length + bmpHeader.length);
+		icoBuffer.set(pngData, icoHeader.length);
 
 		return icoBuffer.buffer;
 	};
