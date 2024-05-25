@@ -94,7 +94,7 @@ export function DownloadButton() {
 	return (
 		<button
 			onClick={downloadFiles}
-			className="rounded-full border border-zinc-950 bg-zinc-50 px-6 py-2 uppercase hover:bg-yellow-300"
+			className="rounded-full border border-zinc-950 bg-zinc-50 px-6 py-2 leading-none uppercase hover:bg-yellow-300"
 		>
 			Download
 		</button>

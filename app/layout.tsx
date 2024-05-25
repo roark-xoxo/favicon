@@ -25,12 +25,10 @@ export default function RootLayout({
 						font.className + " bg-zinc-50 antialiased dark:bg-zinc-800"
 					}
 				>
-					<div className="flex h-screen overflow-hidden">
-						<Sidebar />
-						<div className="flex w-full flex-col">
-							<Nav />
-							{children}
-						</div>
+					<Sidebar />
+					<div className="flex w-full flex-col">
+						<Nav />
+						{children}
 					</div>
 				</body>
 			</Providers>

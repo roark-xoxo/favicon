@@ -9,7 +9,7 @@ export function Sidebar() {
 	const values = useAtomValue(store);
 	const setValues = useSetAtom(store);
 	return (
-		<div className="p-4">
+		<div id="sidebar" className="fixed bottom-4 left-4 top-4">
 			<div className="flex h-full w-64 flex-col items-center space-y-4 rounded-3xl bg-rose-400/65 py-4 dark:text-zinc-100">
 				<div className="flex w-full overflow-scroll px-6">
 					<form className="space-y-6">
@@ -110,7 +110,7 @@ export function Sidebar() {
 									id="text-border-width"
 									value={values.borderWidth}
 									min={0}
-									max={190}
+									max={160}
 									onValueChange={(value) => {
 										setValues((store) => {
 											return { ...store, borderWidth: value[0] };
@@ -127,7 +127,7 @@ export function Sidebar() {
 									id="text-border-radius"
 									value={values.rounded}
 									min={0}
-									max={200}
+									max={160}
 									onValueChange={(value) => {
 										setValues((store) => {
 											return { ...store, rounded: value[0] };

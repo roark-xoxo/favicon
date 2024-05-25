@@ -9,7 +9,7 @@ export function Canvas() {
 	const values = useAtomValue(store);
 	return (
 		<CanvasWrapper>
-			<div className="flex h-full w-full flex-col items-center justify-center p-4">
+			<div className="flex min-h-[calc(100vh-6rem)] flex-col items-center justify-between space-y-4">
 				<Header />
 				<div className="flex h-full w-full flex-col items-center justify-center">
 					<div
@@ -43,19 +43,17 @@ export function Canvas() {
 export function CanvasWrapper({ children }: { children: React.ReactNode }) {
 	return (
 		<div>
-			<div className="h-full w-full bg-rose-200">{children}</div>
+			<div className="h-full min-h-[100vh] w-full pb-4 pl-72 pr-4 pt-20">
+				{children}
+			</div>
 		</div>
 	);
 }
 
 export function Header() {
 	return (
-		<div className="pb-3 pr-3">
-			<header className="flex items-center justify-end space-x-4 rounded-3xl bg-teal-400/65 px-2 py-2 leading-tight dark:bg-slate-900">
-				<div>
-					<DownloadButton />
-				</div>
-			</header>
+		<div className="ml-auto">
+			<DownloadButton />
 		</div>
 	);
 }
