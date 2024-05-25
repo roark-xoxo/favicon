@@ -3,35 +3,59 @@
 import { useAtomValue } from "jotai";
 import { store } from "@/lib/stores";
 import { Footer } from "@/components/footer";
+import { DownloadButton } from "@/components/download-button";
 
 export function Canvas() {
 	const values = useAtomValue(store);
 	return (
-		<div className="flex h-full w-full flex-col items-center justify-center p-4">
-			<div className="flex h-full w-full flex-col items-center justify-center">
-				<div
-				id="favicon"
-					style={{
-						borderWidth: `${values.borderWidth}px`,
-						borderRadius: `${values.rounded}px`,
-						backgroundColor: `${values.bgColor}`,
-						borderColor: `${values.borderColor}`,
-					}}
-					className="flex size-80 items-center justify-center overflow-hidden"
-				>
-					<span
+		<CanvasWrapper>
+			<div className="flex h-full w-full flex-col items-center justify-center p-4">
+				<Header />
+				<div className="flex h-full w-full flex-col items-center justify-center">
+					<div
+						id="favicon"
 						style={{
-							fontSize: `${values.fontSize}px`,
-							rotate: `${values.rotation}deg`,
-							color: `${values.textColor}`,
+							borderWidth: `${values.borderWidth}px`,
+							borderRadius: `${values.rounded}px`,
+							backgroundColor: `${values.bgColor}`,
+							borderColor: `${values.borderColor}`,
 						}}
-						className="leading-none"
+						className="flex size-80 items-center justify-center overflow-hidden"
 					>
-						{values.text}
-					</span>
+						<span
+							style={{
+								fontSize: `${values.fontSize}px`,
+								rotate: `${values.rotation}deg`,
+								color: `${values.textColor}`,
+							}}
+							className="leading-none"
+						>
+							{values.text}
+						</span>
+					</div>
 				</div>
+				<Footer />
 			</div>
-			<Footer />
+		</CanvasWrapper>
+	);
+}
+
+export function CanvasWrapper({ children }: { children: React.ReactNode }) {
+	return (
+		<div>
+			<div className="h-full w-full bg-rose-200">{children}</div>
+		</div>
+	);
+}
+
+export function Header() {
+	return (
+		<div className="pb-3 pr-3">
+			<header className="flex items-center justify-end space-x-4 rounded-3xl bg-teal-400/65 px-2 py-2 leading-tight dark:bg-slate-900">
+				<div>
+					<DownloadButton />
+				</div>
+			</header>
 		</div>
 	);
 }

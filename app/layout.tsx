@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Jersey_25 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { Nav } from "@/components/nav";
+import { Sidebar } from "@/components/sidebar";
 
 const font = Jersey_25({ weight: "400", subsets: ["latin"] });
 
@@ -23,7 +25,13 @@ export default function RootLayout({
 						font.className + " bg-zinc-50 antialiased dark:bg-zinc-800"
 					}
 				>
-					{children}
+					<div className="flex h-screen overflow-hidden">
+						<Sidebar />
+						<div className="flex w-full flex-col">
+							<Nav />
+							{children}
+						</div>
+					</div>
 				</body>
 			</Providers>
 		</html>

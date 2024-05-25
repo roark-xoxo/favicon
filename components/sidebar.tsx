@@ -9,32 +9,32 @@ export function Sidebar() {
 	const values = useAtomValue(store);
 	const setValues = useSetAtom(store);
 	return (
-		<div className="pb-3 pl-3 pr-4">
+		<div className="p-4">
 			<div className="flex h-full w-64 flex-col items-center space-y-4 rounded-3xl bg-rose-400/65 py-4 dark:text-zinc-100">
 				<div className="flex w-full overflow-scroll px-6">
 					<form className="space-y-6">
-						<div>
-							<Label htmlFor="text" className="sr-only">
-								Enter Text
-							</Label>
-							<input
-								value={values.text}
-								onChange={(event) =>
-									setValues((atom) => {
-										return {
-											...atom,
-											text: event.target.value,
-										};
-									})
-								}
-								name="text"
-								className="w-full rounded-xl border border-zinc-950 px-4 text-3xl shadow-sm placeholder:text-zinc-400"
-								placeholder="Enter Text"
-							/>
-						</div>
 						<section className="space-y-3">
 							<div className="flex items-center justify-between">
 								<h2 className="text-3xl font-bold leading-none">Text</h2>
+							</div>
+							<div>
+								<Label htmlFor="text" className="sr-only">
+									Enter Text
+								</Label>
+								<input
+									value={values.text}
+									onChange={(event) =>
+										setValues((atom) => {
+											return {
+												...atom,
+												text: event.target.value,
+											};
+										})
+									}
+									name="text"
+									className="w-full rounded-xl border border-zinc-950 px-4 text-3xl shadow-sm placeholder:text-zinc-400"
+									placeholder="Enter Text"
+								/>
 							</div>
 							<div>
 								<ColorPicker
