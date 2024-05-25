@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.0.1",
+    "@mdx-js/react": "^3.0.1",
+    "@next/mdx": "^14.2.3",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slider": "^1.1.2",
     "@types/file-saver": "^2.0.7",
+    "@types/mdx": "^2.0.13",
     "file-saver": "^2.0.5",
     "icojs": "^0.19.3",
     "jotai": "^2.8.0",
