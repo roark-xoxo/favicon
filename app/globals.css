@@ -8,5 +8,16 @@ body {
 
 #sidebar .react-colorful {
 	width: 208px;
-	@apply h-36 rounded-xl;
+	@apply h-28 rounded-xl;
+}
+
+#sidebar .react-colorful__pointer {
+	@apply size-5 border border-zinc-50;
+}
+
+#sidebar .react-colorful__hue {
+	@apply h-4;
+}
+#sidebar .react-colorful__alpha {
+	@apply h-4;
 }
