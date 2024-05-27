@@ -136,7 +136,7 @@ export function Sidebar() {
 						</Section>
 						<Section>
 							<SectionHeader>Background</SectionHeader>
-							<div>
+							<div className="pb-1">
 								<ColorPicker
 									id="background-color-picker"
 									color={values.bgColor}

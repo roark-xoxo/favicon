@@ -30,7 +30,7 @@ export function InputRange({
 					<Slider.Range className="absolute h-full rounded-full bg-zinc-100" />
 				</Slider.Track>
 				<Slider.Thumb
-					className="block size-4 rounded-full border border-zinc-950 bg-rose-500 hover:bg-rose-600  focus:outline-none focus:ring-2 focus:ring-zinc-900"
+					className="block size-5 rounded-full border border-zinc-50 bg-zinc-950 hover:bg-zinc-800  focus:outline-none focus:ring-2 focus:ring-zinc-900"
 					aria-label={id}
 				/>
 			</Slider.Root>
