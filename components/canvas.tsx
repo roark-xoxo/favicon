@@ -10,7 +10,9 @@ export function Canvas() {
 	return (
 		<CanvasWrapper>
 			<div className="flex min-h-[calc(100vh-6rem)] flex-col items-center justify-between space-y-4">
-				<Header />
+				<div className="ml-auto">
+					<DownloadButton />
+				</div>
 				<div className="flex h-full w-full flex-col items-center justify-center">
 					<div
 						id="favicon"
@@ -46,14 +48,6 @@ export function CanvasWrapper({ children }: { children: React.ReactNode }) {
 			<div className="h-full min-h-[100vh] w-full pb-4 pl-72 pr-4 pt-20">
 				{children}
 			</div>
-		</div>
-	);
-}
-
-export function Header() {
-	return (
-		<div className="ml-auto">
-			<DownloadButton />
 		</div>
 	);
 }
