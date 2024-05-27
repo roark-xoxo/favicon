@@ -10,14 +10,12 @@ export function Sidebar() {
 	const setValues = useSetAtom(store);
 	return (
 		<div id="sidebar" className="fixed bottom-4 left-4 top-4">
-			<div className="flex h-full w-64 flex-col items-center space-y-4 rounded-3xl bg-rose-400/65 py-4 dark:text-zinc-100">
+			<div className="flex h-full w-64 flex-col items-center space-y-4 rounded-3xl bg-rose-400/75 py-4 dark:text-zinc-100">
 				<div className="flex w-full overflow-scroll px-6">
-					<form className="space-y-6">
-						<section className="space-y-3">
-							<div className="flex items-center justify-between">
-								<h2 className="text-3xl font-bold leading-none">Text</h2>
-							</div>
-							<div>
+					<form className="space-y-5">
+						<Section>
+							<SectionHeader>Text</SectionHeader>
+							<div className="pb-2">
 								<Label htmlFor="text" className="sr-only">
 									Enter Text
 								</Label>
@@ -32,11 +30,11 @@ export function Sidebar() {
 										})
 									}
 									name="text"
-									className="w-full rounded-xl border border-zinc-950 px-4 text-3xl shadow-sm placeholder:text-zinc-400"
+									className="w-full rounded-xl border border-zinc-950 px-4 text-2xl placeholder:text-zinc-400"
 									placeholder="Enter Text"
 								/>
 							</div>
-							<div>
+							<div className="pb-2">
 								<ColorPicker
 									id="text-color-picker"
 									color={values.textColor}
@@ -50,7 +48,7 @@ export function Sidebar() {
 									}
 								/>
 							</div>
-							<div className="space-y-1">
+							<div className="">
 								<div className="flex items-center justify-between">
 									<h3>Size</h3>
 									<p>{values.fontSize} px</p>
@@ -67,7 +65,7 @@ export function Sidebar() {
 									}}
 								/>
 							</div>
-							<div className="space-y-1">
+							<div className="">
 								<div className="flex items-center justify-between">
 									<h3>Rotation</h3>
 									<p>{values.rotation}°</p>
@@ -84,9 +82,9 @@ export function Sidebar() {
 									}}
 								/>
 							</div>
-						</section>
-						<section className="space-y-3">
-							<h2 className="text-3xl font-bold leading-none">Border</h2>
+						</Section>
+						<Section>
+							<SectionHeader>Border</SectionHeader>
 							<div>
 								<ColorPicker
 									id="background-color-picker"
@@ -135,9 +133,9 @@ export function Sidebar() {
 									}}
 								/>
 							</div>
-						</section>
-						<section>
-							<h2 className="text-3xl font-bold leading-none">Background</h2>
+						</Section>
+						<Section>
+							<SectionHeader>Background</SectionHeader>
 							<div>
 								<ColorPicker
 									id="background-color-picker"
@@ -152,10 +150,22 @@ export function Sidebar() {
 									}
 								/>
 							</div>
-						</section>
+						</Section>
 					</form>
 				</div>
 			</div>
 		</div>
+	);
+}
+
+function Section({ children }: { children: React.ReactNode }) {
+	return <section>{children}</section>;
+}
+
+function SectionHeader({ children }: { children: React.ReactNode }) {
+	return (
+		<h2 className="pb-3 text-center text-xl font-bold leading-none">
+			{children}
+		</h2>
 	);
 }
