@@ -8,7 +8,7 @@ body {
 
 #sidebar .react-colorful {
 	width: 208px;
-	@apply h-28 rounded-xl;
+	@apply h-28;
 }
 
 #sidebar .react-colorful__pointer {
