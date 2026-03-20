@@ -9,17 +9,30 @@ body {
 }
 
 #sidebar .react-colorful {
-	width: 208px;
-	@apply h-28;
+	width: 100%;
+	max-width: 208px;
+	@apply h-27 gap-1 rounded-sm border border-zinc-700 bg-zinc-900/50 p-1;
+}
+
+#sidebar .react-colorful__saturation {
+	@apply rounded-sm border border-zinc-800 shadow-none;
 }
 
 #sidebar .react-colorful__pointer {
-	@apply size-5 border border-zinc-50;
+	@apply size-3.5 border-2 border-zinc-950;
+	box-shadow:
+		0 0 0 1px rgb(251 191 36 / 0.45),
+		0 1px 3px rgb(0 0 0 / 0.5);
 }
 
 #sidebar .react-colorful__hue {
-	@apply h-4;
+	@apply h-2.5 rounded-sm border border-zinc-800;
 }
+
 #sidebar .react-colorful__alpha {
-	@apply h-4;
+	@apply h-2.5 rounded-sm border border-zinc-800;
+}
+
+#sidebar .react-colorful__last-control {
+	@apply rounded-sm;
 }

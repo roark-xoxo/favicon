@@ -9,13 +9,16 @@ export function Sidebar() {
 	const values = useAtomValue(store);
 	const setValues = useSetAtom(store);
 	return (
-		<div id="sidebar" className="fixed top-4 bottom-4 left-4">
-			<div className="flex h-full w-64 flex-col items-center space-y-4 rounded-3xl bg-rose-400/75 py-4 dark:text-zinc-100">
-				<div className="flex w-full overflow-scroll px-6">
-					<form className="space-y-5">
+		<div
+			id="sidebar"
+			className="fixed top-4 bottom-4 left-4 z-20 [font-family:var(--font-terminal),ui-monospace,monospace]"
+		>
+			<div className="flex h-full w-70 flex-col rounded-sm border border-zinc-700/90 bg-zinc-950 py-3 text-zinc-300 shadow-[0_0_0_1px_rgba(0,0,0,0.5),0_16px_48px_rgba(0,0,0,0.45)]">
+				<div className="flex min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden px-3">
+					<form className="flex w-full flex-col gap-0">
 						<Section>
 							<SectionHeader>Text</SectionHeader>
-							<div className="pb-2">
+							<div className="pb-2.5">
 								<Label htmlFor="text" className="sr-only">
 									Enter Text
 								</Label>
@@ -30,11 +33,12 @@ export function Sidebar() {
 										})
 									}
 									name="text"
-									className="w-full rounded-xl border border-zinc-950 px-4 text-2xl placeholder:text-zinc-400"
-									placeholder="Enter Text"
+									id="text"
+									className="w-full border border-zinc-700 bg-zinc-900/80 px-2.5 py-2 text-base tracking-tight text-zinc-100 placeholder:text-zinc-600 focus:border-amber-600/60 focus:outline-none focus:ring-1 focus:ring-amber-500/25"
+									placeholder="Enter text"
 								/>
 							</div>
-							<div className="pb-2">
+							<div className="pb-2.5">
 								<ColorPicker
 									id="text-color-picker"
 									color={values.textColor}
@@ -48,10 +52,14 @@ export function Sidebar() {
 									}
 								/>
 							</div>
-							<div className="">
-								<div className="flex items-center justify-between">
-									<h3>Size</h3>
-									<p>{values.fontSize} px</p>
+							<div className="pb-2">
+								<div className="mb-1 flex items-baseline justify-between gap-2">
+									<span className="text-[10px] font-medium tracking-[0.12em] text-zinc-500 uppercase">
+										Size
+									</span>
+									<span className="text-xs tabular-nums text-amber-500/90">
+										{values.fontSize}px
+									</span>
 								</div>
 								<InputRange
 									id="text-size"
@@ -65,10 +73,14 @@ export function Sidebar() {
 									}}
 								/>
 							</div>
-							<div className="">
-								<div className="flex items-center justify-between">
-									<h3>Rotation</h3>
-									<p>{values.rotation}°</p>
+							<div>
+								<div className="mb-1 flex items-baseline justify-between gap-2">
+									<span className="text-[10px] font-medium tracking-[0.12em] text-zinc-500 uppercase">
+										Rotation
+									</span>
+									<span className="text-xs tabular-nums text-amber-500/90">
+										{values.rotation}°
+									</span>
 								</div>
 								<InputRange
 									id="text-rotation"
@@ -85,9 +97,9 @@ export function Sidebar() {
 						</Section>
 						<Section>
 							<SectionHeader>Border</SectionHeader>
-							<div>
+							<div className="pb-2">
 								<ColorPicker
-									id="background-color-picker"
+									id="border-color-picker"
 									color={values.borderColor}
 									onChange={(color) =>
 										setValues((atom) => {
@@ -99,10 +111,14 @@ export function Sidebar() {
 									}
 								/>
 							</div>
-							<div className="space-y-1">
-								<div className="flex items-center justify-between">
-									<h3>Width</h3>
-									<p>{values.borderWidth} px</p>
+							<div className="space-y-1 pb-2">
+								<div className="mb-1 flex items-baseline justify-between gap-2">
+									<span className="text-[10px] font-medium tracking-[0.12em] text-zinc-500 uppercase">
+										Width
+									</span>
+									<span className="text-xs tabular-nums text-amber-500/90">
+										{values.borderWidth}px
+									</span>
 								</div>
 								<InputRange
 									id="text-border-width"
@@ -117,9 +133,13 @@ export function Sidebar() {
 								/>
 							</div>
 							<div className="space-y-1">
-								<div className="flex items-center justify-between">
-									<h3>Radius</h3>
-									<p>{values.rounded} px</p>
+								<div className="mb-1 flex items-baseline justify-between gap-2">
+									<span className="text-[10px] font-medium tracking-[0.12em] text-zinc-500 uppercase">
+										Radius
+									</span>
+									<span className="text-xs tabular-nums text-amber-500/90">
+										{values.rounded}px
+									</span>
 								</div>
 								<InputRange
 									id="text-border-radius"
@@ -136,9 +156,9 @@ export function Sidebar() {
 						</Section>
 						<Section>
 							<SectionHeader>Background</SectionHeader>
-							<div className="pb-1">
+							<div>
 								<ColorPicker
-									id="background-color-picker"
+									id="bg-color-picker"
 									color={values.bgColor}
 									onChange={(color) =>
 										setValues((atom) => {
@@ -159,12 +179,16 @@ export function Sidebar() {
 }
 
 function Section({ children }: { children: React.ReactNode }) {
-	return <section>{children}</section>;
+	return (
+		<section className="border-b border-zinc-800/90 py-3 first:pt-0 last:border-b-0 last:pb-0">
+			{children}
+		</section>
+	);
 }
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
 	return (
-		<h2 className="pb-3 text-center text-xl leading-none font-bold">
+		<h2 className="mb-2.5 border-l-2 border-amber-500 pl-2 text-[11px] font-medium tracking-[0.14em] text-amber-500/95 uppercase">
 			{children}
 		</h2>
 	);

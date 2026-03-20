@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Jersey_25 } from "next/font/google";
+import { IBM_Plex_Mono, Jersey_25 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Nav } from "@/components/nav";
@@ -9,6 +9,12 @@ const font = Jersey_25({
 	weight: "400",
 	subsets: ["latin"],
 	variable: "--font-jersey",
+});
+
+const fontTerminal = IBM_Plex_Mono({
+	weight: ["400", "500"],
+	subsets: ["latin"],
+	variable: "--font-terminal",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +30,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${font.variable} bg-zinc-50 font-sans antialiased dark:bg-zinc-800`}
+				className={`${font.variable} ${fontTerminal.variable} bg-zinc-50 font-sans antialiased dark:bg-zinc-800`}
 			>
 				<Providers>
 					<Sidebar />
