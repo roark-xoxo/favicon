@@ -30,7 +30,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${fontDisplay.variable} ${fontSans.variable} bg-canvas font-sans text-zinc-300 antialiased`}
+				className={`${fontDisplay.variable} ${fontSans.variable} bg-canvas-950 font-sans text-canvas-300 antialiased`}
 			>
 				<Providers>
 					<Sidebar />

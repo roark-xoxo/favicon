@@ -12,7 +12,7 @@ export function Nav() {
 
 	return (
 		<div className="fixed top-4 right-4 left-78 z-10">
-			<div className="flex h-10 w-full items-center justify-between rounded-sm border border-zinc-700/90 bg-canvas px-3 text-zinc-300 shadow-[0_0_0_1px_rgba(0,0,0,0.5),0_12px_32px_rgba(0,0,0,0.35)]">
+			<div className="flex h-10 w-full items-center justify-between rounded-sm border border-canvas-700/90 bg-canvas-950 px-3 text-canvas-300 shadow-[0_0_0_1px_rgba(0,0,0,0.5),0_12px_32px_rgba(0,0,0,0.35)]">
 				<Link
 					href="/"
 					className="text-left leading-none text-amber-500/95 transition-colors hover:text-amber-400"
@@ -23,7 +23,7 @@ export function Nav() {
 						</span>
 					)}
 					{pathname !== "/" && (
-						<span className="inline-flex items-center gap-1.5 text-xs font-medium tracking-[0.14em] text-zinc-400 uppercase hover:text-amber-500/90">
+						<span className="inline-flex items-center gap-1.5 text-xs font-medium tracking-[0.14em] text-canvas-400 uppercase hover:text-amber-500/90">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
@@ -49,8 +49,8 @@ export function Nav() {
 							<Link
 								className={
 									href === pathname
-										? "border-l-2 border-amber-500 bg-zinc-900/80 py-1 pr-2.5 pl-2 text-[10px] font-medium tracking-[0.12em] text-amber-500/95 uppercase"
-										: "border-l-2 border-transparent py-1 pr-2.5 pl-2 text-[10px] font-medium tracking-[0.12em] text-zinc-500 uppercase transition-colors hover:bg-zinc-900/50 hover:text-zinc-300"
+										? "border-l-2 border-amber-500 bg-canvas-900/80 py-1 pr-2.5 pl-2 text-[10px] font-medium tracking-[0.12em] text-amber-500/95 uppercase"
+										: "border-l-2 border-transparent py-1 pr-2.5 pl-2 text-[10px] font-medium tracking-[0.12em] text-canvas-500 uppercase transition-colors hover:bg-canvas-900/50 hover:text-canvas-300"
 								}
 								href={href}
 							>

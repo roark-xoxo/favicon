@@ -18,7 +18,7 @@ export function ColorPicker({
 				<HexColorInput
 					id={id}
 					color={color}
-					className="w-full border border-zinc-700 bg-zinc-900 px-2 py-1.5 text-xs tracking-wide text-zinc-100 uppercase placeholder:text-zinc-600 focus:border-amber-600/60 focus:outline-none focus:ring-1 focus:ring-amber-500/25"
+					className="w-full border border-canvas-700 bg-canvas-900 px-2 py-1.5 text-xs tracking-wide text-canvas-100 uppercase placeholder:text-canvas-600 focus:border-amber-600/60 focus:outline-none focus:ring-1 focus:ring-amber-500/25"
 					onChange={onChange}
 					prefixed={true}
 					alpha={true}
