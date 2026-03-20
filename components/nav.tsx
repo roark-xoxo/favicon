@@ -12,7 +12,7 @@ export function Nav() {
 
 	return (
 		<div className="fixed top-4 right-4 left-78 z-10">
-			<div className="flex h-10 w-full items-center justify-between rounded-sm border border-zinc-700/90 bg-zinc-950 px-3 text-zinc-300 shadow-[0_0_0_1px_rgba(0,0,0,0.5),0_12px_32px_rgba(0,0,0,0.35)]">
+			<div className="flex h-10 w-full items-center justify-between rounded-sm border border-zinc-700/90 bg-canvas px-3 text-zinc-300 shadow-[0_0_0_1px_rgba(0,0,0,0.5),0_12px_32px_rgba(0,0,0,0.35)]">
 				<Link
 					href="/"
 					className="text-left leading-none text-amber-500/95 transition-colors hover:text-amber-400"
