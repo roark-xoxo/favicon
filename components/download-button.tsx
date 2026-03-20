@@ -141,21 +141,21 @@ export function DownloadButton() {
 
 	return (
 		<button
+			type="button"
 			onMouseDown={downloadFiles}
-			className="group inline-flex h-11 items-center rounded-full border border-zinc-950 bg-zinc-50/75 px-6 text-lg leading-none uppercase shadow-md hover:bg-yellow-300/75"
+			className="group inline-flex h-9 items-center gap-1.5 rounded-sm border border-zinc-700/90 bg-zinc-950 px-3.5 text-[10px] font-medium tracking-[0.14em] text-zinc-400 uppercase shadow-[0_0_0_1px_rgba(0,0,0,0.45)] transition-colors [font-family:var(--font-terminal),ui-monospace,monospace] hover:border-amber-600/50 hover:bg-zinc-900 hover:text-amber-500/90"
 		>
-			<span className="pr-1.5">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 20 20"
-					fill="currentColor"
-					className="size-4 transition-all group-hover:translate-y-[1px] group-hover:text-yellow-900"
-				>
-					<path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-					<path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-				</svg>
-			</span>
-			<span className="group-hover:text-zinc-950">Download</span>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 20 20"
+				fill="currentColor"
+				className="size-3.5 text-amber-500/85 transition-transform group-hover:translate-y-px"
+				aria-hidden
+			>
+				<path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
+				<path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
+			</svg>
+			Download
 		</button>
 	);
 }
