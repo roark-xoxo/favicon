@@ -11,7 +11,7 @@ export function Sidebar() {
 	return (
 		<div
 			id="sidebar"
-			className="fixed top-4 bottom-4 left-4 z-20 [font-family:var(--font-terminal),ui-monospace,monospace]"
+			className="fixed top-4 bottom-4 left-4 z-20"
 		>
 			<div className="flex h-full w-70 flex-col rounded-sm border border-zinc-700/90 bg-zinc-950 py-3 text-zinc-300 shadow-[0_0_0_1px_rgba(0,0,0,0.5),0_16px_48px_rgba(0,0,0,0.45)]">
 				<div className="flex min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden px-3">

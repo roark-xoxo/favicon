@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Jersey_25 } from "next/font/google";
+import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Nav } from "@/components/nav";
 import { Sidebar } from "@/components/sidebar";
 
-const font = Jersey_25({
-	weight: "400",
-	subsets: ["latin"],
-	variable: "--font-jersey",
-});
-
-const fontTerminal = IBM_Plex_Mono({
+const fontSans = IBM_Plex_Mono({
 	weight: ["400", "500"],
 	subsets: ["latin"],
-	variable: "--font-terminal",
+	variable: "--font-sans-base",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +24,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${font.variable} ${fontTerminal.variable} bg-zinc-950 font-sans text-zinc-300 antialiased`}
+				className={`${fontSans.variable} bg-zinc-950 font-sans text-zinc-300 antialiased`}
 			>
 				<Providers>
 					<Sidebar />

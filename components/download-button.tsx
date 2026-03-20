@@ -143,7 +143,7 @@ export function DownloadButton() {
 		<button
 			type="button"
 			onMouseDown={downloadFiles}
-			className="group inline-flex h-9 items-center gap-1.5 rounded-sm border border-zinc-700/90 bg-zinc-950 px-3.5 text-[10px] font-medium tracking-[0.14em] text-zinc-400 uppercase shadow-[0_0_0_1px_rgba(0,0,0,0.45)] transition-colors [font-family:var(--font-terminal),ui-monospace,monospace] hover:border-amber-600/50 hover:bg-zinc-900 hover:text-amber-500/90"
+			className="group inline-flex h-9 items-center gap-1.5 rounded-sm border border-zinc-700/90 bg-zinc-950 px-3.5 text-[10px] font-medium tracking-[0.14em] text-zinc-400 uppercase shadow-[0_0_0_1px_rgba(0,0,0,0.45)] transition-colors hover:border-amber-600/50 hover:bg-zinc-900 hover:text-amber-500/90"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

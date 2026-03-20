@@ -22,7 +22,7 @@ export function Canvas() {
 							backgroundColor: `${values.bgColor}`,
 							borderColor: `${values.borderColor}`,
 						}}
-						className="flex size-80 items-center justify-center overflow-hidden [font-family:var(--font-terminal),ui-monospace,monospace]"
+						className="flex size-80 items-center justify-center overflow-hidden"
 					>
 						<span
 							style={{
@@ -30,7 +30,7 @@ export function Canvas() {
 								rotate: `${values.rotation}deg`,
 								color: `${values.textColor}`,
 							}}
-							className="[font-family:var(--font-terminal),ui-monospace,monospace] leading-none"
+							className="leading-none"
 						>
 							{values.text}
 						</span>
