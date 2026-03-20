@@ -7,6 +7,8 @@ import { DownloadButton } from "@/components/download-button";
 
 export function Canvas() {
 	const values = useAtomValue(store);
+	const innerRadius = Math.max(values.rounded - values.borderWidth, 0);
+
 	return (
 		<CanvasWrapper>
 			<div className="flex min-h-[calc(100vh-6rem)] flex-col items-center justify-between space-y-4">
@@ -19,21 +21,29 @@ export function Canvas() {
 						style={{
 							borderWidth: `${values.borderWidth}px`,
 							borderRadius: `${values.rounded}px`,
-							backgroundColor: `${values.bgColor}`,
 							borderColor: `${values.borderColor}`,
+							borderStyle: "solid",
 						}}
-						className="flex size-80 items-center justify-center overflow-hidden"
+						className="box-border flex size-80 items-center justify-center"
 					>
-						<span
+						<div
 							style={{
-								fontSize: `${values.fontSize}px`,
-								rotate: `${values.rotation}deg`,
-								color: `${values.textColor}`,
+								backgroundColor: `${values.bgColor}`,
+								borderRadius: `${innerRadius}px`,
 							}}
-							className="leading-none"
+							className="flex size-full items-center justify-center overflow-hidden"
 						>
-							{values.text}
-						</span>
+							<span
+								style={{
+									fontSize: `${values.fontSize}px`,
+									rotate: `${values.rotation}deg`,
+									color: `${values.textColor}`,
+								}}
+								className="leading-none"
+							>
+								{values.text}
+							</span>
+						</div>
 					</div>
 				</div>
 				<Footer />
