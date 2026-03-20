@@ -8,7 +8,8 @@
 		"build": "next build",
 		"start": "serve out",
 		"preview": "serve out",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"test": "bun test"
 	},
 	"dependencies": {
 		"@mdx-js/loader": "^3.1.1",
@@ -19,14 +20,12 @@
 		"@types/file-saver": "^2.0.7",
 		"@types/mdx": "^2.0.13",
 		"file-saver": "^2.0.5",
-		"icojs": "^0.20.1",
 		"jotai": "^2.18.1",
 		"jszip": "^3.10.1",
 		"next": "16.2.0",
 		"react": "^19.2.4",
 		"react-colorful": "^5.6.1",
-		"react-dom": "^19.2.4",
-		"to-ico": "^1.1.5"
+		"react-dom": "^19.2.4"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4.2.2",

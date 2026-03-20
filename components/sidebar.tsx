@@ -3,8 +3,8 @@
 import { ColorPicker } from "@/components/color-picker";
 import { InputRange } from "@/components/input-range";
 import { useAtomValue, useSetAtom } from "jotai";
-import { store } from "@/lib/stores";
 import { Label } from "@/components/label";
+import { store, type FaviconValues } from "@/lib/stores";
 export function Sidebar() {
 	const values = useAtomValue(store);
 	const setValues = useSetAtom(store);
@@ -25,12 +25,9 @@ export function Sidebar() {
 								<input
 									value={values.text}
 									onChange={(event) =>
-										setValues((atom) => {
-											return {
-												...atom,
-												text: event.target.value,
-											};
-										})
+										setValues((current) =>
+											updateTextMetadata(current, event.target.value)
+										)
 									}
 									name="text"
 									id="text"
@@ -93,6 +90,52 @@ export function Sidebar() {
 										});
 									}}
 								/>
+							</div>
+						</Section>
+						<Section>
+							<SectionHeader>Metadata</SectionHeader>
+							<div className="space-y-2.5">
+								<div>
+									<Label
+										htmlFor="app-name"
+										className="mb-1 block text-[10px] font-medium tracking-[0.12em] text-canvas-500 uppercase"
+									>
+										App name
+									</Label>
+									<input
+										value={values.appName}
+										onChange={(event) =>
+											setValues((current) =>
+												updateAppNameMetadata(current, event.target.value)
+											)
+										}
+										name="app-name"
+										id="app-name"
+										className="w-full border border-canvas-700 bg-canvas-900/80 px-2.5 py-2 text-sm tracking-tight text-canvas-100 placeholder:text-canvas-600 focus:border-amber-600/60 focus:outline-none focus:ring-1 focus:ring-amber-500/25"
+										placeholder="Application name"
+									/>
+								</div>
+								<div>
+									<Label
+										htmlFor="short-name"
+										className="mb-1 block text-[10px] font-medium tracking-[0.12em] text-canvas-500 uppercase"
+									>
+										Short name
+									</Label>
+									<input
+										value={values.shortName}
+										onChange={(event) =>
+											setValues((current) => ({
+												...current,
+												shortName: event.target.value,
+											}))
+										}
+										name="short-name"
+										id="short-name"
+										className="w-full border border-canvas-700 bg-canvas-900/80 px-2.5 py-2 text-sm tracking-tight text-canvas-100 placeholder:text-canvas-600 focus:border-amber-600/60 focus:outline-none focus:ring-1 focus:ring-amber-500/25"
+										placeholder="Short name"
+									/>
+								</div>
 							</div>
 						</Section>
 						<Section>
@@ -192,4 +235,32 @@ function SectionHeader({ children }: { children: React.ReactNode }) {
 			{children}
 		</h2>
 	);
+}
+
+function updateTextMetadata(
+	current: FaviconValues,
+	text: string
+) {
+	const nextAppName = current.appName === current.text ? text : current.appName;
+	const nextShortName =
+		current.shortName === current.appName ? nextAppName : current.shortName;
+
+	return {
+		...current,
+		appName: nextAppName,
+		shortName: nextShortName,
+		text,
+	};
+}
+
+function updateAppNameMetadata(
+	current: FaviconValues,
+	appName: string
+) {
+	return {
+		...current,
+		appName,
+		shortName:
+			current.shortName === current.appName ? appName : current.shortName,
+	};
 }

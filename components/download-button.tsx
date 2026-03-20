@@ -5,6 +5,14 @@ import { useStore } from "jotai";
 import JSZip from "jszip";
 import { useRef, useState } from "react";
 import {
+	createFaviconTags,
+	createSiteWebManifest,
+	ICO_ICON_SIZES,
+	PNG_EXPORTS,
+	type FaviconExportMetadata,
+} from "@/lib/favicon-export";
+import { createIcoBuffer } from "@/lib/favicon-ico";
+import {
 	renderFaviconCanvas,
 	type FaviconFontStyles,
 } from "@/lib/favicon-renderer";
@@ -14,65 +22,6 @@ export function DownloadButton() {
 	const jotaiStore = useStore();
 	const isDownloadingRef = useRef(false);
 	const [isDownloading, setIsDownloading] = useState(false);
-	const iconSizes = [16, 32, 96, 192, 512];
-	const appleTouchIconSizes = [57, 72, 114, 144, 180];
-	const createIcons = (
-		getCanvas: (size: number) => HTMLCanvasElement
-	): Record<string, string> => {
-		const icons: Record<string, string> = {};
-
-		for (const size of iconSizes) {
-			icons[`favicon-${size}x${size}.png`] = canvasToBase64Png(getCanvas(size));
-		}
-
-		for (const size of appleTouchIconSizes) {
-			icons[`apple-touch-icon-${size}x${size}.png`] = canvasToBase64Png(
-				getCanvas(size)
-			);
-		}
-
-		icons["apple-touch-icon.png"] = canvasToBase64Png(getCanvas(180));
-
-		return icons;
-	};
-
-	const createIco = async (canvas: HTMLCanvasElement): Promise<ArrayBuffer> => {
-		const blob = await canvasToBlob(canvas);
-		const arrayBuffer = await blob.arrayBuffer();
-		return createIcoBuffer(arrayBuffer);
-	};
-
-	const createIcoBuffer = (pngBuffer: ArrayBuffer): ArrayBuffer => {
-		const pngData = new Uint8Array(pngBuffer);
-		const fileHeaderSize = 6;
-		const iconDirEntrySize = 16;
-
-		const icoHeader = new Uint8Array(fileHeaderSize + iconDirEntrySize);
-		icoHeader.set([0x00, 0x00, 0x01, 0x00, 0x01, 0x00], 0);
-		const iconDirEntry = [
-			0x20, // Width: 32
-			0x20, // Height: 32
-			0x00, // Number of colors (0 if no palette)
-			0x00, // Reserved
-			0x01,
-			0x00, // Color planes
-			0x20,
-			0x00, // Bits per pixel: 32
-			...Array.from(new Uint8Array(new Uint32Array([pngData.length]).buffer)), // Image size
-			...Array.from(
-				new Uint8Array(
-					new Uint32Array([fileHeaderSize + iconDirEntrySize]).buffer
-				)
-			), // Offset to image data
-		];
-		icoHeader.set(iconDirEntry, fileHeaderSize);
-
-		const icoBuffer = new Uint8Array(icoHeader.length + pngData.length);
-		icoBuffer.set(icoHeader, 0);
-		icoBuffer.set(pngData, icoHeader.length);
-
-		return icoBuffer.buffer;
-	};
 
 	const downloadFiles = async () => {
 		if (isDownloadingRef.current) {
@@ -87,9 +36,16 @@ export function DownloadButton() {
 
 			const values = jotaiStore.get(store);
 			const fontStyles = getPreviewFontStyles();
-			const renderedCanvases = new Map<number, HTMLCanvasElement>();
-			const getCanvas = (size: number) => {
-				const existingCanvas = renderedCanvases.get(size);
+			const renderedCanvases = new Map<string, HTMLCanvasElement>();
+			const getCanvas = ({
+				size,
+				variant,
+			}: {
+				size: number;
+				variant: "standard" | "maskable";
+			}) => {
+				const cacheKey = `${variant}:${size}`;
+				const existingCanvas = renderedCanvases.get(cacheKey);
 				if (existingCanvas) {
 					return existingCanvas;
 				}
@@ -98,18 +54,30 @@ export function DownloadButton() {
 					fontStyles,
 					size,
 					values,
+					variant,
 				});
-				renderedCanvases.set(size, canvas);
+				renderedCanvases.set(cacheKey, canvas);
 				return canvas;
 			};
-			const icoBuffer = await createIco(getCanvas(32));
-			const icons = createIcons(getCanvas);
+			const icoBuffer = await createIcoBufferFromCanvases(getCanvas);
+			const metadata = getExportMetadata(values);
 
 			const zip = new JSZip();
 			zip.file("favicon.ico", icoBuffer);
-			for (const [name, data] of Object.entries(icons)) {
-				zip.file(name, data, { base64: true });
+			for (const asset of PNG_EXPORTS) {
+				zip.file(
+					asset.filename,
+					canvasToBase64Png(
+						getCanvas({
+							size: asset.size,
+							variant: asset.variant,
+						})
+					),
+					{ base64: true }
+				);
 			}
+			zip.file("site.webmanifest", createSiteWebManifest(metadata));
+			zip.file("favicon-tags.html", createFaviconTags(metadata));
 
 			const blob = await zip.generateAsync({ type: "blob" });
 			saveAs(blob, "favicons.zip");
@@ -150,6 +118,34 @@ export function DownloadButton() {
 	);
 }
 
+async function createIcoBufferFromCanvases(
+	getCanvas: ({
+		size,
+		variant,
+	}: {
+		size: number;
+		variant: "standard" | "maskable";
+	}) => HTMLCanvasElement
+) {
+	const images = await Promise.all(
+		ICO_ICON_SIZES.map(async (size) => {
+			const blob = await canvasToBlob(
+				getCanvas({
+					size,
+					variant: "standard",
+				})
+			);
+
+			return {
+				size,
+				pngData: new Uint8Array(await blob.arrayBuffer()),
+			};
+		})
+	);
+
+	return createIcoBuffer(images);
+}
+
 function canvasToBase64Png(canvas: HTMLCanvasElement) {
 	return canvas.toDataURL("image/png").split(",")[1];
 }
@@ -186,4 +182,16 @@ async function waitForFonts() {
 	if ("fonts" in document) {
 		await document.fonts.ready;
 	}
+}
+
+function getExportMetadata(values: {
+	appName: string;
+	bgColor: string;
+	shortName: string;
+}): FaviconExportMetadata {
+	return {
+		appName: values.appName,
+		bgColor: values.bgColor,
+		shortName: values.shortName,
+	};
 }

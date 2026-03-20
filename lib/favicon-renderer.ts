@@ -1,6 +1,7 @@
 "use client";
 
 import { getFaviconGeometry, type FaviconValues } from "@/lib/stores";
+import { getMaskableIconLayout, type FaviconExportVariant } from "@/lib/favicon-export";
 
 export type FaviconFontStyles = {
 	fontFamily: string;
@@ -12,20 +13,74 @@ export function renderFaviconCanvas({
 	fontStyles,
 	size,
 	values,
+	variant = "standard",
+}: {
+	fontStyles: FaviconFontStyles;
+	size: number;
+	values: FaviconValues;
+	variant?: FaviconExportVariant;
+}) {
+	if (variant === "maskable") {
+		return renderMaskableFaviconCanvas({
+			fontStyles,
+			size,
+			values,
+		});
+	}
+
+	const canvas = createCanvas(size);
+	const context = getCanvasContext(canvas);
+
+	renderStandardFavicon({
+		context,
+		fontStyles,
+		size,
+		values,
+	});
+
+	return canvas;
+}
+
+function renderMaskableFaviconCanvas({
+	fontStyles,
+	size,
+	values,
 }: {
 	fontStyles: FaviconFontStyles;
 	size: number;
 	values: FaviconValues;
 }) {
-	const canvas = document.createElement("canvas");
-	canvas.width = size;
-	canvas.height = size;
+	const canvas = createCanvas(size);
+	const context = getCanvasContext(canvas);
+	const { iconSize, padding } = getMaskableIconLayout(size);
+	const iconCanvas = createCanvas(iconSize);
+	const iconContext = getCanvasContext(iconCanvas);
 
-	const context = canvas.getContext("2d");
-	if (!context) {
-		throw new Error("Failed to get 2D context");
-	}
+	context.fillStyle = values.bgColor;
+	context.fillRect(0, 0, size, size);
 
+	renderStandardFavicon({
+		context: iconContext,
+		fontStyles,
+		size: iconSize,
+		values,
+	});
+	context.drawImage(iconCanvas, padding, padding);
+
+	return canvas;
+}
+
+function renderStandardFavicon({
+	context,
+	fontStyles,
+	size,
+	values,
+}: {
+	context: CanvasRenderingContext2D;
+	fontStyles: FaviconFontStyles;
+	size: number;
+	values: FaviconValues;
+}) {
 	const geometry = getFaviconGeometry(values, size);
 
 	fillRoundedRect(
@@ -39,7 +94,7 @@ export function renderFaviconCanvas({
 	);
 
 	if (geometry.innerSize <= 0) {
-		return canvas;
+		return;
 	}
 
 	fillRoundedRect(
@@ -53,7 +108,7 @@ export function renderFaviconCanvas({
 	);
 
 	if (!values.text || geometry.textSize <= 0) {
-		return canvas;
+		return;
 	}
 
 	context.save();
@@ -79,8 +134,23 @@ export function renderFaviconCanvas({
 	context.textBaseline = "middle";
 	context.fillText(values.text, 0, 0);
 	context.restore();
+}
+
+function createCanvas(size: number) {
+	const canvas = document.createElement("canvas");
+	canvas.width = size;
+	canvas.height = size;
 
 	return canvas;
+}
+
+function getCanvasContext(canvas: HTMLCanvasElement) {
+	const context = canvas.getContext("2d");
+	if (!context) {
+		throw new Error("Failed to get 2D context");
+	}
+
+	return context;
 }
 
 function fillRoundedRect(
