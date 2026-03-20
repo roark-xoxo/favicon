@@ -1,3 +1,19 @@
 # About
 
-Just a little side project.
+Favicon Maker was built around a very specific frustration: creating a good favicon is usually more annoying than it should be. For small websites, landing pages, personal portfolios, demos, and quick prototypes, you often do not need a full brand-asset workflow. You just need a clean icon, a few useful sizes, and a download that is ready to drop into a project.
+
+Most favicon tooling falls into one of two camps. It is either a giant generator that throws a pile of outputs and configuration choices at you, or it assumes you already have polished artwork prepared somewhere else. This project is aimed at the gap in between. It lets you design something simple directly in the browser, adjust the text, colors, border, radius, and rotation, and export a practical bundle in a couple of clicks.
+
+The motivation was not to build a design suite. It was to build a focused utility that gets from "I need a favicon" to "I have the files" with very little friction. The narrow interface is intentional: one canvas, one control panel, one export action. A favicon is a tiny asset, but it shows up everywhere, so the tool for making it should feel immediate and precise.
+
+## Why This Stack
+
+The app uses `Next.js 16` and `React 19`, but it is published as a static export rather than a backend-heavy product. That fits the shape of the tool. The core experience is interactive, but it mostly belongs in the browser, and shipping it as static output keeps hosting and deployment simple.
+
+`Tailwind CSS 4` handles the visual layer, `Jotai` stores the editor state, and `Radix UI` plus `react-colorful` provide the low-level controls behind the sliders, labels, and pickers. The content pages are written in `MDX`, which keeps the surrounding site lightweight and easy to maintain.
+
+The export flow is also intentionally direct. The rendered favicon preview is captured in the browser with `modern-screenshot`, resized into the PNG set the app ships, packaged with `JSZip`, and downloaded locally with `file-saver`. The `.ico` file is assembled in the app as part of that same client-side pipeline. `Bun` is used for package management and scripts.
+
+In short, Favicon Maker is a small tool on purpose. It exists to make one annoying job fast, clean, and dependable.
+
+Built by [Marcello Curto](https://www.marcellocurto.com) for ROARK.
