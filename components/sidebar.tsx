@@ -13,7 +13,7 @@ export function Sidebar() {
 			id="sidebar"
 			className="fixed top-4 bottom-4 left-4 z-20"
 		>
-			<div className="flex h-full w-70 flex-col rounded-sm border border-canvas-700/90 bg-canvas-950 py-3 text-canvas-300 shadow-[0_0_0_1px_rgba(0,0,0,0.5),0_16px_48px_rgba(0,0,0,0.45)]">
+			<div className="flex h-full w-70 flex-col rounded-sm border border-canvas-700/90 bg-canvas-950 py-3 text-canvas-300">
 				<div className="flex min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden px-3">
 					<form className="flex w-full flex-col gap-0">
 						<Section>
