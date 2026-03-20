@@ -12,7 +12,7 @@ The app uses `Next.js 16` and `React 19`, but it is published as a static export
 
 `Tailwind CSS 4` handles the visual layer, `Jotai` stores the editor state, and `Radix UI` plus `react-colorful` provide the low-level controls behind the sliders, labels, and pickers. The content pages are written in `MDX`, which keeps the surrounding site lightweight and easy to maintain.
 
-The export flow is also intentionally direct. The rendered favicon preview is captured in the browser with `modern-screenshot`, resized into the PNG set the app ships, packaged with `JSZip`, and downloaded locally with `file-saver`. The `.ico` file is assembled in the app as part of that same client-side pipeline. `Bun` is used for package management and scripts.
+The export flow is also intentionally direct. The current editor state is rendered into canvases in the browser, packaged into the PNG set the app ships with `JSZip`, and downloaded locally with `file-saver`. The `.ico` file is assembled in the app as part of that same client-side pipeline. `Bun` is used for package management and scripts.
 
 In short, Favicon Maker is a small tool on purpose. It exists to make one annoying job fast, clean, and dependable.
 

@@ -1,86 +1,45 @@
 "use client";
 
-import { domToPng } from "modern-screenshot";
-import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { useStore } from "jotai";
+import JSZip from "jszip";
+import { useRef, useState } from "react";
+import {
+	renderFaviconCanvas,
+	type FaviconFontStyles,
+} from "@/lib/favicon-renderer";
+import { store } from "@/lib/stores";
 
 export function DownloadButton() {
+	const jotaiStore = useStore();
+	const isDownloadingRef = useRef(false);
+	const [isDownloading, setIsDownloading] = useState(false);
 	const iconSizes = [16, 32, 96, 192, 512];
 	const appleTouchIconSizes = [57, 72, 114, 144, 180];
-	const createIcons = async (
-		pngDataUrl: string
-	): Promise<Record<string, string>> => {
+	const createIcons = (
+		getCanvas: (size: number) => HTMLCanvasElement
+	): Record<string, string> => {
 		const icons: Record<string, string> = {};
 
 		for (const size of iconSizes) {
-			const icon = await createIcon(pngDataUrl, size, size);
-			icons[`favicon-${size}x${size}.png`] = icon;
+			icons[`favicon-${size}x${size}.png`] = canvasToBase64Png(getCanvas(size));
 		}
 
 		for (const size of appleTouchIconSizes) {
-			const icon = await createIcon(pngDataUrl, size, size);
-			icons[`apple-touch-icon-${size}x${size}.png`] = icon;
+			icons[`apple-touch-icon-${size}x${size}.png`] = canvasToBase64Png(
+				getCanvas(size)
+			);
 		}
 
-		const defaultAppleTouchIcon = await createIcon(pngDataUrl, 180, 180);
-		icons["apple-touch-icon.png"] = defaultAppleTouchIcon;
+		icons["apple-touch-icon.png"] = canvasToBase64Png(getCanvas(180));
 
 		return icons;
 	};
 
-	const createIcon = (
-		pngDataUrl: string,
-		width: number,
-		height: number
-	): Promise<string> => {
-		const img = new Image();
-		img.src = pngDataUrl;
-
-		return new Promise((resolve, reject) => {
-			img.onload = () => {
-				const canvas = document.createElement("canvas");
-				const context = canvas.getContext("2d");
-				if (!context) {
-					reject(new Error("Failed to get 2D context"));
-					return;
-				}
-				canvas.width = width;
-				canvas.height = height;
-				context.drawImage(img, 0, 0, width, height);
-				resolve(canvas.toDataURL("image/png").split(",")[1]);
-			};
-			img.onerror = (error) => reject(error);
-		});
-	};
-
-	const createIco = async (pngDataUrl: string): Promise<ArrayBuffer> => {
-		const img = new Image();
-		img.src = pngDataUrl;
-
-		return new Promise((resolve, reject) => {
-			img.onload = () => {
-				const canvas = document.createElement("canvas");
-				const context = canvas.getContext("2d");
-				if (!context) {
-					reject(new Error("Failed to get 2D context"));
-					return;
-				}
-				canvas.width = 32;
-				canvas.height = 32;
-				context.drawImage(img, 0, 0, 32, 32);
-
-				canvas.toBlob(async (blob) => {
-					if (blob) {
-						const arrayBuffer = await blob.arrayBuffer();
-						const icoBuffer = createIcoBuffer(arrayBuffer);
-						resolve(icoBuffer);
-					} else {
-						reject(new Error("Failed to create blob from canvas."));
-					}
-				}, "image/png");
-			};
-			img.onerror = (error) => reject(error);
-		});
+	const createIco = async (canvas: HTMLCanvasElement): Promise<ArrayBuffer> => {
+		const blob = await canvasToBlob(canvas);
+		const arrayBuffer = await blob.arrayBuffer();
+		return createIcoBuffer(arrayBuffer);
 	};
 
 	const createIcoBuffer = (pngBuffer: ArrayBuffer): ArrayBuffer => {
@@ -116,14 +75,35 @@ export function DownloadButton() {
 	};
 
 	const downloadFiles = async () => {
-		const faviconEl = document.querySelector("#favicon");
-		if (!faviconEl) return;
+		if (isDownloadingRef.current) {
+			return;
+		}
+
+		isDownloadingRef.current = true;
+		setIsDownloading(true);
 
 		try {
-			const pngDataUrl = await domToPng(faviconEl);
-			const icoBuffer = await createIco(pngDataUrl);
+			await waitForFonts();
 
-			const icons = await createIcons(pngDataUrl);
+			const values = jotaiStore.get(store);
+			const fontStyles = getPreviewFontStyles();
+			const renderedCanvases = new Map<number, HTMLCanvasElement>();
+			const getCanvas = (size: number) => {
+				const existingCanvas = renderedCanvases.get(size);
+				if (existingCanvas) {
+					return existingCanvas;
+				}
+
+				const canvas = renderFaviconCanvas({
+					fontStyles,
+					size,
+					values,
+				});
+				renderedCanvases.set(size, canvas);
+				return canvas;
+			};
+			const icoBuffer = await createIco(getCanvas(32));
+			const icons = createIcons(getCanvas);
 
 			const zip = new JSZip();
 			zip.file("favicon.ico", icoBuffer);
@@ -131,31 +111,79 @@ export function DownloadButton() {
 				zip.file(name, data, { base64: true });
 			}
 
-			zip.generateAsync({ type: "blob" }).then((blob) => {
-				saveAs(blob, "favicons.zip");
-			});
+			const blob = await zip.generateAsync({ type: "blob" });
+			saveAs(blob, "favicons.zip");
 		} catch (error) {
-			console.error("Error creating ICO file:", error);
+			console.error("Error creating favicon bundle:", error);
+		} finally {
+			isDownloadingRef.current = false;
+			setIsDownloading(false);
 		}
 	};
 
 	return (
 		<button
 			type="button"
-			onMouseDown={downloadFiles}
-			className="group inline-flex h-9 items-center gap-1.5 rounded-sm border border-canvas-700/90 bg-canvas-950 px-3.5 text-[10px] font-medium tracking-[0.14em] text-canvas-400 uppercase shadow-[0_0_0_1px_rgba(0,0,0,0.45)] transition-colors hover:border-amber-600/50 hover:bg-canvas-900 hover:text-amber-500/90"
+			onClick={downloadFiles}
+			disabled={isDownloading}
+			aria-busy={isDownloading}
+			className={`group inline-flex h-9 items-center gap-1.5 rounded-sm border px-3.5 text-[10px] font-medium tracking-[0.14em] uppercase transition-colors ${
+				isDownloading
+					? "bg-canvas-900 cursor-wait border-amber-600/50 text-amber-500/90"
+					: "border-canvas-700/90 bg-canvas-950 text-canvas-400 hover:bg-canvas-900 hover:border-amber-600/50 hover:text-amber-500/90"
+			}`}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 20 20"
 				fill="currentColor"
-				className="size-3.5 text-amber-500/85 transition-transform group-hover:translate-y-px"
+				className={`size-3.5 text-amber-500/85 transition-transform ${
+					isDownloading ? "" : "group-hover:translate-y-px"
+				}`}
 				aria-hidden
 			>
 				<path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
 				<path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
 			</svg>
-			Download
+			{isDownloading ? "Preparing..." : "Download"}
 		</button>
 	);
+}
+
+function canvasToBase64Png(canvas: HTMLCanvasElement) {
+	return canvas.toDataURL("image/png").split(",")[1];
+}
+
+function canvasToBlob(canvas: HTMLCanvasElement) {
+	return new Promise<Blob>((resolve, reject) => {
+		canvas.toBlob((blob) => {
+			if (blob) {
+				resolve(blob);
+				return;
+			}
+
+			reject(new Error("Failed to create blob from canvas."));
+		}, "image/png");
+	});
+}
+
+function getPreviewFontStyles(): FaviconFontStyles {
+	const previewTextEl = document.querySelector<HTMLElement>(
+		"[data-favicon-text]"
+	);
+	const computedStyles = window.getComputedStyle(
+		previewTextEl ?? document.body
+	);
+
+	return {
+		fontFamily: computedStyles.fontFamily || "sans-serif",
+		fontStyle: computedStyles.fontStyle || "normal",
+		fontWeight: computedStyles.fontWeight || "400",
+	};
+}
+
+async function waitForFonts() {
+	if ("fonts" in document) {
+		await document.fonts.ready;
+	}
 }

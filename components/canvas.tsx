@@ -1,13 +1,13 @@
 "use client";
 
 import { useAtomValue } from "jotai";
-import { store } from "@/lib/stores";
+import { getFaviconGeometry, store } from "@/lib/stores";
 import { Footer } from "@/components/footer";
 import { DownloadButton } from "@/components/download-button";
 
 export function Canvas() {
 	const values = useAtomValue(store);
-	const innerRadius = Math.max(values.rounded - values.borderWidth, 0);
+	const { innerRadius } = getFaviconGeometry(values);
 
 	return (
 		<CanvasWrapper>
@@ -34,6 +34,7 @@ export function Canvas() {
 							className="flex size-full items-center justify-center overflow-hidden"
 						>
 							<span
+								data-favicon-text="true"
 								style={{
 									fontSize: `${values.fontSize}px`,
 									rotate: `${values.rotation}deg`,
