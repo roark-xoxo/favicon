@@ -9,7 +9,7 @@ export function Sidebar() {
 	const values = useAtomValue(store);
 	const setValues = useSetAtom(store);
 	return (
-		<div id="sidebar" className="fixed bottom-4 left-4 top-4">
+		<div id="sidebar" className="fixed top-4 bottom-4 left-4">
 			<div className="flex h-full w-64 flex-col items-center space-y-4 rounded-3xl bg-rose-400/75 py-4 dark:text-zinc-100">
 				<div className="flex w-full overflow-scroll px-6">
 					<form className="space-y-5">
@@ -164,7 +164,7 @@ function Section({ children }: { children: React.ReactNode }) {
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
 	return (
-		<h2 className="pb-3 text-center text-xl font-bold leading-none">
+		<h2 className="pb-3 text-center text-xl leading-none font-bold">
 			{children}
 		</h2>
 	);

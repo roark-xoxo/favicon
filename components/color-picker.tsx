@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
 
 export function ColorPicker({

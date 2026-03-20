@@ -5,7 +5,11 @@ import { Providers } from "@/components/providers";
 import { Nav } from "@/components/nav";
 import { Sidebar } from "@/components/sidebar";
 
-const font = Jersey_25({ weight: "400", subsets: ["latin"] });
+const font = Jersey_25({
+	weight: "400",
+	subsets: ["latin"],
+	variable: "--font-jersey",
+});
 
 export const metadata: Metadata = {
 	title: "FAVICON",
@@ -19,19 +23,17 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<Providers>
-				<body
-					className={
-						font.className + " bg-zinc-50 antialiased dark:bg-zinc-800"
-					}
-				>
+			<body
+				className={`${font.variable} bg-zinc-50 font-sans antialiased dark:bg-zinc-800`}
+			>
+				<Providers>
 					<Sidebar />
 					<div className="flex w-full flex-col">
 						<Nav />
 						{children}
 					</div>
-				</body>
-			</Providers>
+				</Providers>
+			</body>
 		</html>
 	);
 }

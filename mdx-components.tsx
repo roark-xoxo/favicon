@@ -6,7 +6,9 @@ import type {
 	ReactNode,
 } from "react";
 
-export function useMDXComponents(components: MDXComponents): MDXComponents {
+export function useMDXComponents(
+	components: MDXComponents = {}
+): MDXComponents {
 	return {
 		...components,
 		h1: H1,

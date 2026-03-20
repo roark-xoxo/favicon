@@ -45,7 +45,7 @@ export function Canvas() {
 export function CanvasWrapper({ children }: { children: React.ReactNode }) {
 	return (
 		<div>
-			<div className="h-full min-h-[100vh] w-full pb-4 pl-72 pr-4 pt-20">
+			<div className="h-full min-h-[100vh] w-full pt-20 pr-4 pb-4 pl-72">
 				{children}
 			</div>
 		</div>

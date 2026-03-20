@@ -17,7 +17,7 @@ export function InputRange({
 	return (
 		<div>
 			<Slider.Root
-				className="relative flex h-4 w-full touch-none select-none items-center"
+				className="relative flex h-4 w-full touch-none items-center select-none"
 				value={[value]}
 				id={id}
 				name={id}
@@ -30,7 +30,7 @@ export function InputRange({
 					<Slider.Range className="absolute h-full rounded-full bg-zinc-100" />
 				</Slider.Track>
 				<Slider.Thumb
-					className="block size-5 rounded-full border border-zinc-50 bg-zinc-950 hover:bg-zinc-800  focus:outline-none focus:ring-2 focus:ring-zinc-900"
+					className="block size-5 rounded-full border border-zinc-50 bg-zinc-950 hover:bg-zinc-800 focus:ring-2 focus:ring-zinc-900 focus:outline-hidden"
 					aria-label={id}
 				/>
 			</Slider.Root>

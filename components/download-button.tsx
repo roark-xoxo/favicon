@@ -142,7 +142,7 @@ export function DownloadButton() {
 	return (
 		<button
 			onMouseDown={downloadFiles}
-			className="group inline-flex h-11 items-center rounded-full border border-zinc-950 bg-zinc-50/75 px-6 text-lg uppercase leading-none shadow-md hover:bg-yellow-300/75"
+			className="group inline-flex h-11 items-center rounded-full border border-zinc-950 bg-zinc-50/75 px-6 text-lg leading-none uppercase shadow-md hover:bg-yellow-300/75"
 		>
 			<span className="pr-1.5">
 				<svg
