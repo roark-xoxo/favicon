@@ -39,7 +39,7 @@ export function RoarkLogo() {
 			x="0px"
 			y="0px"
 			viewBox="0 0 425.2 110.55"
-			className="w-36 fill-zinc-950 hover:fill-rose-600 dark:fill-zinc-50 dark:hover:fill-rose-700"
+			className="w-36 fill-zinc-400 transition-colors hover:fill-amber-500/85"
 		>
 			<g>
 				<path

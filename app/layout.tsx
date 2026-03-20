@@ -30,7 +30,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${font.variable} ${fontTerminal.variable} bg-zinc-50 font-sans antialiased dark:bg-zinc-800`}
+				className={`${font.variable} ${fontTerminal.variable} bg-zinc-950 font-sans text-zinc-300 antialiased`}
 			>
 				<Providers>
 					<Sidebar />
