@@ -82,18 +82,17 @@ type WebManifestIcon = {
 	purpose?: "maskable";
 };
 
-export function getGeneratedBundleFileNames() {
-	return [
-		"favicon.ico",
-		...PNG_EXPORTS.map(({ filename }) => filename),
-		"site.webmanifest",
-		"favicon-tags.html",
-	];
-}
-
 export function getMaskableIconLayout(size: number) {
-	const iconSize = Math.max(1, Math.round(size * MASKABLE_ICON_SCALE));
-	const padding = Math.max(0, Math.round((size - iconSize) / 2));
+	const normalizedSize = Math.max(1, Math.round(size));
+	const padding = Math.max(
+		0,
+		Math.round(normalizedSize * ((1 - MASKABLE_ICON_SCALE) / 2))
+	);
+	const iconSize = Math.max(1, normalizedSize - padding * 2);
+
+	if (padding * 2 + iconSize !== normalizedSize) {
+		throw new Error("Maskable icon layout must fill the target canvas.");
+	}
 
 	return {
 		iconSize,

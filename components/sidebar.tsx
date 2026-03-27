@@ -2,12 +2,19 @@
 
 import { ColorPicker } from "@/components/color-picker";
 import { InputRange } from "@/components/input-range";
-import { useAtomValue, useSetAtom } from "jotai";
 import { Label } from "@/components/label";
-import { store, type FaviconValues } from "@/lib/stores";
+import {
+	updateAppNameMetadata,
+	updateShortNameMetadata,
+	updateTextMetadata,
+} from "@/lib/favicon-metadata";
+import { store } from "@/lib/stores";
+import { useAtomValue, useSetAtom } from "jotai";
+
 export function Sidebar() {
 	const values = useAtomValue(store);
 	const setValues = useSetAtom(store);
+
 	return (
 		<div
 			id="sidebar"
@@ -38,14 +45,13 @@ export function Sidebar() {
 							<div className="pb-2.5">
 								<ColorPicker
 									id="text-color-picker"
+									label="Text color"
 									color={values.textColor}
 									onChange={(color) =>
-										setValues((atom) => {
-											return {
-												...atom,
-												textColor: color,
-											};
-										})
+										setValues((atom) => ({
+											...atom,
+											textColor: color,
+										}))
 									}
 								/>
 							</div>
@@ -60,13 +66,15 @@ export function Sidebar() {
 								</div>
 								<InputRange
 									id="text-size"
+									label="Text size"
 									value={values.fontSize}
 									min={0}
 									max={700}
 									onValueChange={(value) => {
-										setValues((store) => {
-											return { ...store, fontSize: value[0] };
-										});
+										setValues((current) => ({
+											...current,
+											fontSize: value[0],
+										}));
 									}}
 								/>
 							</div>
@@ -81,13 +89,15 @@ export function Sidebar() {
 								</div>
 								<InputRange
 									id="text-rotation"
+									label="Text rotation"
 									value={values.rotation}
 									min={0}
 									max={360}
 									onValueChange={(value) => {
-										setValues((store) => {
-											return { ...store, rotation: value[0] };
-										});
+										setValues((current) => ({
+											...current,
+											rotation: value[0],
+										}));
 									}}
 								/>
 							</div>
@@ -125,10 +135,12 @@ export function Sidebar() {
 									<input
 										value={values.shortName}
 										onChange={(event) =>
-											setValues((current) => ({
-												...current,
-												shortName: event.target.value,
-											}))
+											setValues((current) =>
+												updateShortNameMetadata(
+													current,
+													event.target.value
+												)
+											)
 										}
 										name="short-name"
 										id="short-name"
@@ -143,14 +155,13 @@ export function Sidebar() {
 							<div className="pb-2">
 								<ColorPicker
 									id="border-color-picker"
+									label="Border color"
 									color={values.borderColor}
 									onChange={(color) =>
-										setValues((atom) => {
-											return {
-												...atom,
-												borderColor: color,
-											};
-										})
+										setValues((atom) => ({
+											...atom,
+											borderColor: color,
+										}))
 									}
 								/>
 							</div>
@@ -165,13 +176,15 @@ export function Sidebar() {
 								</div>
 								<InputRange
 									id="text-border-width"
+									label="Border width"
 									value={values.borderWidth}
 									min={0}
 									max={160}
 									onValueChange={(value) => {
-										setValues((store) => {
-											return { ...store, borderWidth: value[0] };
-										});
+										setValues((current) => ({
+											...current,
+											borderWidth: value[0],
+										}));
 									}}
 								/>
 							</div>
@@ -186,13 +199,15 @@ export function Sidebar() {
 								</div>
 								<InputRange
 									id="text-border-radius"
+									label="Border radius"
 									value={values.rounded}
 									min={0}
 									max={160}
 									onValueChange={(value) => {
-										setValues((store) => {
-											return { ...store, rounded: value[0] };
-										});
+										setValues((current) => ({
+											...current,
+											rounded: value[0],
+										}));
 									}}
 								/>
 							</div>
@@ -202,14 +217,13 @@ export function Sidebar() {
 							<div>
 								<ColorPicker
 									id="bg-color-picker"
+									label="Background color"
 									color={values.bgColor}
 									onChange={(color) =>
-										setValues((atom) => {
-											return {
-												...atom,
-												bgColor: color,
-											};
-										})
+										setValues((atom) => ({
+											...atom,
+											bgColor: color,
+										}))
 									}
 								/>
 							</div>
@@ -235,32 +249,4 @@ function SectionHeader({ children }: { children: React.ReactNode }) {
 			{children}
 		</h2>
 	);
-}
-
-function updateTextMetadata(
-	current: FaviconValues,
-	text: string
-) {
-	const nextAppName = current.appName === current.text ? text : current.appName;
-	const nextShortName =
-		current.shortName === current.appName ? nextAppName : current.shortName;
-
-	return {
-		...current,
-		appName: nextAppName,
-		shortName: nextShortName,
-		text,
-	};
-}
-
-function updateAppNameMetadata(
-	current: FaviconValues,
-	appName: string
-) {
-	return {
-		...current,
-		appName,
-		shortName:
-			current.shortName === current.appName ? appName : current.shortName,
-	};
 }

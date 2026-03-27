@@ -11,6 +11,8 @@ export type FaviconValues = {
 	borderColor: string;
 	appName: string;
 	shortName: string;
+	appNameLinked: boolean;
+	shortNameLinked: boolean;
 };
 
 export const CANONICAL_FAVICON_SIZE = 320;
@@ -26,6 +28,8 @@ export const initialFaviconValues: FaviconValues = {
 	borderColor: "#000",
 	appName: "ico",
 	shortName: "ico",
+	appNameLinked: true,
+	shortNameLinked: true,
 };
 
 export function getFaviconGeometry(

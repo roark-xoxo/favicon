@@ -1,102 +1,110 @@
 import { describe, expect, test } from "bun:test";
 import {
 	createFaviconTags,
-	getGeneratedBundleFileNames,
+	createSiteWebManifest,
 	getMaskableIconLayout,
 	getWebManifest,
 } from "./favicon-export";
 
+function toIconKey(icon: {
+	src: string;
+	sizes: string;
+	type: string;
+	purpose?: string;
+}) {
+	return [icon.src, icon.sizes, icon.type, icon.purpose ?? ""].join("|");
+}
+
 describe("favicon export helpers", () => {
-	test("returns the modern bundle file set", () => {
-		expect(getGeneratedBundleFileNames()).toEqual([
-			"favicon.ico",
-			"favicon-16x16.png",
-			"favicon-32x32.png",
-			"apple-touch-icon.png",
-			"apple-touch-icon-120x120.png",
-			"apple-touch-icon-152x152.png",
-			"apple-touch-icon-167x167.png",
-			"apple-touch-icon-180x180.png",
-			"icon-192x192.png",
-			"icon-512x512.png",
-			"icon-maskable-192x192.png",
-			"icon-maskable-512x512.png",
-			"site.webmanifest",
-			"favicon-tags.html",
-		]);
-
-		expect(getGeneratedBundleFileNames()).not.toContain("favicon-96x96.png");
-		expect(getGeneratedBundleFileNames()).not.toContain(
-			"apple-touch-icon-57x57.png"
-		);
-	});
-
-	test("creates a manifest with standard and maskable icons", () => {
+	test("normalizes blank metadata when creating the manifest", () => {
 		const manifest = getWebManifest({
-			appName: "Favicon Builder",
+			appName: "  Favicon Builder  ",
 			bgColor: "#101010",
-			shortName: "Builder",
+			shortName: "   ",
 		});
 
-		expect(manifest).toEqual({
+		expect(manifest).toMatchObject({
 			name: "Favicon Builder",
-			short_name: "Builder",
+			short_name: "Favicon Builder",
 			start_url: "/",
 			display: "standalone",
 			background_color: "#101010",
 			theme_color: "#101010",
-			icons: [
-				{
-					src: "/icon-192x192.png",
-					sizes: "192x192",
-					type: "image/png",
-				},
-				{
-					src: "/icon-512x512.png",
-					sizes: "512x512",
-					type: "image/png",
-				},
-				{
-					src: "/icon-maskable-192x192.png",
-					sizes: "192x192",
-					type: "image/png",
-					purpose: "maskable",
-				},
-				{
-					src: "/icon-maskable-512x512.png",
-					sizes: "512x512",
-					type: "image/png",
-					purpose: "maskable",
-				},
-			],
 		});
+		expect(new Set(manifest.icons.map(toIconKey))).toEqual(
+			new Set([
+				"/icon-192x192.png|192x192|image/png|",
+				"/icon-512x512.png|512x512|image/png|",
+				"/icon-maskable-192x192.png|192x192|image/png|maskable",
+				"/icon-maskable-512x512.png|512x512|image/png|maskable",
+			])
+		);
 	});
 
-	test("creates favicon tags for the generated assets", () => {
+	test("serializes manifest JSON with favicon fallbacks and a trailing newline", () => {
+		const manifestText = createSiteWebManifest({
+			appName: "  ",
+			bgColor: "#ffffff",
+			shortName: " ",
+		});
+		const manifest = JSON.parse(manifestText);
+
+		expect(manifest.name).toBe("favicon");
+		expect(manifest.short_name).toBe("favicon");
+		expect(manifest.theme_color).toBe("#ffffff");
+		expect(manifestText.endsWith("\n")).toBe(true);
+	});
+
+	test("creates escaped favicon tags for the generated assets", () => {
 		const tags = createFaviconTags({
-			appName: "Favicon Builder",
+			appName: '<App "Name" & Co>',
 			bgColor: "#ffffff",
 			shortName: "Builder",
 		});
+		const lines = tags.trim().split("\n");
 
-		expect(tags).toContain('<link rel="icon" href="/favicon.ico">');
-		expect(tags).toContain(
-			'<link rel="manifest" href="/site.webmanifest">'
+		expect(lines).toContain('<link rel="icon" href="/favicon.ico">');
+		expect(lines).toContain('<link rel="manifest" href="/site.webmanifest">');
+		expect(lines).toContain(
+			'<meta name="application-name" content="&lt;App &quot;Name&quot; &amp; Co&gt;">'
 		);
-		expect(tags).toContain(
-			'<meta name="apple-mobile-web-app-title" content="Favicon Builder">'
+		expect(lines).toContain(
+			'<meta name="apple-mobile-web-app-title" content="&lt;App &quot;Name&quot; &amp; Co&gt;">'
 		);
-		expect(tags).toContain('<meta name="theme-color" content="#ffffff">');
+		expect(
+			lines.filter((line) => line.includes('rel="manifest"')).length
+		).toBe(1);
+		expect(
+			lines.filter((line) => line.includes('name="theme-color"')).length
+		).toBe(1);
 	});
 
-	test("uses a consistent maskable inset", () => {
-		expect(getMaskableIconLayout(192)).toEqual({
-			iconSize: 154,
-			padding: 19,
+	test("keeps the maskable layout inside the canvas for a wide size range", () => {
+		for (let size = 1; size <= 1024; size += 1) {
+			const { iconSize, padding } = getMaskableIconLayout(size);
+
+			expect(iconSize).toBeGreaterThanOrEqual(1);
+			expect(padding).toBeGreaterThanOrEqual(0);
+			expect(padding * 2 + iconSize).toBe(size);
+		}
+	});
+
+	test("normalizes zero, negative, and fractional sizes before layout", () => {
+		expect(getMaskableIconLayout(-10)).toEqual({
+			iconSize: 1,
+			padding: 0,
 		});
-		expect(getMaskableIconLayout(512)).toEqual({
-			iconSize: 410,
-			padding: 51,
+		expect(getMaskableIconLayout(0)).toEqual({
+			iconSize: 1,
+			padding: 0,
+		});
+		expect(getMaskableIconLayout(10.4)).toEqual({
+			iconSize: 8,
+			padding: 1,
+		});
+		expect(getMaskableIconLayout(10.6)).toEqual({
+			iconSize: 9,
+			padding: 1,
 		});
 	});
 });

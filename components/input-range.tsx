@@ -3,12 +3,14 @@ import * as Slider from "@radix-ui/react-slider";
 
 export function InputRange({
 	id,
+	label,
 	value,
 	min,
 	max,
 	onValueChange,
 }: {
 	id: string;
+	label: string;
 	value: number;
 	min: number;
 	max: number;
@@ -31,7 +33,7 @@ export function InputRange({
 				</Slider.Track>
 				<Slider.Thumb
 					className="block size-2.5 border border-amber-500/90 bg-canvas-950 shadow-[0_0_0_1px_rgba(0,0,0,0.4)] hover:border-amber-400 focus-visible:ring-1 focus-visible:ring-amber-500/50 focus-visible:outline-none"
-					aria-label={id}
+					aria-label={label}
 				/>
 			</Slider.Root>
 		</div>
