@@ -83,29 +83,33 @@ function renderStandardFavicon({
 }) {
 	const geometry = getFaviconGeometry(values, size);
 
-	fillRoundedRect(
-		context,
-		0,
-		0,
-		size,
-		size,
-		geometry.outerRadius,
-		values.borderColor
-	);
+	if (geometry.borderWidth <= 0) {
+		fillRoundedRect(context, 0, 0, size, size, geometry.outerRadius, values.bgColor);
+	} else {
+		fillRoundedRect(
+			context,
+			0,
+			0,
+			size,
+			size,
+			geometry.outerRadius,
+			values.borderColor
+		);
 
-	if (geometry.innerSize <= 0) {
-		return;
+		if (geometry.innerSize <= 0) {
+			return;
+		}
+
+		fillRoundedRect(
+			context,
+			geometry.borderWidth,
+			geometry.borderWidth,
+			geometry.innerSize,
+			geometry.innerSize,
+			geometry.innerRadius,
+			values.bgColor
+		);
 	}
-
-	fillRoundedRect(
-		context,
-		geometry.borderWidth,
-		geometry.borderWidth,
-		geometry.innerSize,
-		geometry.innerSize,
-		geometry.innerRadius,
-		values.bgColor
-	);
 
 	if (!values.text || geometry.textSize <= 0) {
 		return;

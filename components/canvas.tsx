@@ -19,6 +19,7 @@ export function Canvas() {
 					<div
 						id="favicon"
 						style={{
+							backgroundColor: values.bgColor,
 							borderWidth: `${values.borderWidth}px`,
 							borderRadius: `${values.rounded}px`,
 							borderColor: `${values.borderColor}`,
